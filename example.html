@@ -1,0 +1,71 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+      .text-red{
+        color:red;
+      }
+      .text-blue{
+        color:blue;
+      }
+    </style>
+</head>
+<body>
+  <form data-script="this.style.backgroundColor = (age==10?'gray':'')">
+    Name: <input id="test" data-model="name" value="3"/><br/><br/>
+    LastName: <input data-model="lastName"/></br/><br/>
+    FullName: <input data-model="fullName" data-value="name+'1'+lastName" data-class="age==11?'text-red':'text-blue'"/><br/><br/>
+    Age: <input data-model="age" data-validate="int"/><br/><br/>
+    AnotherAge: <span data-model="anotherAge" data-value="realAge+30"></span><br/><br/>
+    RealAge: <span data-model="realAge" data-validate="int" data-value="age+1" data-script="this.style.color=(age>11?'red':'blue');"></span><br/><br/>
+    Married: <input data-model="married" type="checkbox" data-click="@test" /><br/><br/>
+    Marrige: <span data-value="married? 'Married' : 'Not married'"></span><br/><br/>
+    Tab: <ul data-view="tabs"><li>Tab1</li><li>Tab2</li></ul>
+    <!--<select id="Selector" multiple>-->
+      <!--<option value="A">A</option>-->
+      <!--<option value="B">B</option>-->
+    <!--</select>-->
+
+  </form>
+    <script type='text/javascript' src='js/base.js'></script>
+    <script type='text/javascript' src='js/form.js'></script>
+    <script type='text/javascript' src='js/validate.js'></script>
+    <script>
+
+      //extend view
+      Snow.Form.view.tabs = function(model){
+        var items = this.children;
+        items.each(function(o){
+          o.bind('click', function(){
+            var self = this;
+            items.each(function(item){
+              if(self == item){
+                item.style.color = 'red';
+              }
+              else{
+                item.style.color = 'black';
+              }
+            });
+          });
+        });
+
+      }
+
+      var form = Snow.Form(document.querySelector('body'), {
+        name: '三',
+        lastName: '张',
+        age: 12
+      });
+
+      //extend function
+      form.fn.test = function(model){
+        alert(model.age);
+        console.log(this);
+      }
+
+
+
+
+    </script>
+</body>
+</html>
