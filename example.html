@@ -20,12 +20,12 @@
     RealAge: <span data-model="realAge" data-validate="int" data-value="age+1" data-script="this.style.color=(age>11?'red':'blue');"></span><br/><br/>
     Married: <input data-model="married" type="checkbox" data-click="@test" /><br/><br/>
     Marrige: <span data-value="married? 'Married' : 'Not married'"></span><br/><br/>
-    Tab: <ul data-view="tabs"><li>Tab1</li><li>Tab2</li></ul>
+    Tab: <ul data-model="Tabs" data-view="tabs"><li>Tab1</li><li>Tab2</li></ul>
     <!--<select id="Selector" multiple>-->
       <!--<option value="A">A</option>-->
       <!--<option value="B">B</option>-->
     <!--</select>-->
-
+    <input type="button" value="提交" data-click="@submit"/>
   </form>
     <script type='text/javascript' src='js/base.js'></script>
     <script type='text/javascript' src='js/form.js'></script>
@@ -48,6 +48,14 @@
             });
           });
         });
+        return {
+          getValue: function(){
+            return 'Test';
+          },
+          setValue: function(){
+            console.log('set Tabs value');
+          }
+        }
 
       }
 
@@ -61,6 +69,9 @@
       form.fn.test = function(model){
         alert(model.age);
         console.log(this);
+      }
+      form.fn.submit = function(model){
+        console.log(model);
       }
 
 

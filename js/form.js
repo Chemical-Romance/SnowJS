@@ -37,13 +37,17 @@ Snow.Form = function(dom, model){
             model.extend(newModel);
             prepare();
         },
-        submit: function () {
-
+        submit: function (callback) {
+            console.log(model);
         }
     };
 
 
     function init(){
+
+        //init views
+        init.views();
+        
         //init model list
         modelList.each(function(o){
             //init elements
@@ -55,9 +59,6 @@ Snow.Form = function(dom, model){
             //bind event
             init.listen(o);
         });
-
-        //init views
-        init.views();
 
         //init events
         init.events();
@@ -122,9 +123,10 @@ Snow.Form = function(dom, model){
     }
     init.views = function(){
         dom.querySelectorAll('[data-view]').each(function(o){
+            o.view = {}; //view instances
             o.attr('data-view').replace(/ /g, '').split(',').forEach(function (key) {
                 var fn = Snow.Form.view[key];
-                fn.call(o, model);
+                o.view[key] = fn.call(o, model);
             });
         });
     }
@@ -187,6 +189,15 @@ Snow.Form = function(dom, model){
         return new Function('obj', str).call(o, model);
     }
     function getValue(o){
+        if(o.attr('data-view')){
+            for(var key in o.view){
+                var view = o.view[key];
+                if(view && view.getValue){
+                    return view.getValue.call(o);
+                }
+            }
+            return undefined;
+        }
         if(o.tagName == 'INPUT'){
             if(o.type == 'checkbox'){
                 return o.checked;
@@ -218,6 +229,15 @@ Snow.Form = function(dom, model){
         return o.innerHTML;
     }
     function setValue(o, value){
+        if(o.attr('data-view')){
+            for(var key in o.view){
+                var view = o.view[key];
+                if(view && view.setValue){
+                    return view.setValue.call(o, value);
+                }
+            }
+            return;
+        }
         if(o.tagName == 'INPUT'){
             if(o.type == 'checkbox'){
                 o.checked = value;
