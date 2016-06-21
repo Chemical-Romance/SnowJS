@@ -1,27 +1,3 @@
-
-//HTMLElement.prototype.val = function(value){
-//    if(value === undefined){
-//        switch (this.tagName) {
-//            case 'INPUT':
-//            case 'SELECT':
-//            case 'TEXTAREA':
-//                return this.value;
-//            default:
-//                return this.innerHTML;
-//        }
-//        return value;
-//    }
-//    switch(this.tagName){
-//        case 'INPUT':
-//        case 'SELECT':
-//        case 'TEXTAREA':
-//            this.value = value;
-//            break;
-//        default:
-//            this.innerHTML = value;
-//    }
-//}
-
 //Snow Form
 Snow.Form = function(dom, model){
     var self = this, lastModel, flag = 0,
@@ -47,7 +23,7 @@ Snow.Form = function(dom, model){
 
         //init views
         init.views();
-        
+
         //init model list
         modelList.each(function(o){
             //init elements
@@ -98,6 +74,9 @@ Snow.Form = function(dom, model){
                 o.bind('input', init.change);
             }
         }
+        else if(o.tagName == 'SELECT'){
+            o.bind('change', init.change);
+        }
         else{
             o.bind('input', init.change);
         }
@@ -140,7 +119,7 @@ Snow.Form = function(dom, model){
                 return;
             }
         }
-        flat = 0;
+        flag = 0;
         model[key] = unifyValue(this);
         prepare(this);
     }
