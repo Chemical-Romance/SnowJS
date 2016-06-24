@@ -1,6 +1,6 @@
 ﻿Snow.Validate = {
     notNull: function (value) {
-        if (value == '' || value == null || value == undefined)
+        if (value == '' || value == null)
             return false;
         return true;
     },
@@ -16,13 +16,15 @@
         var reg = /^([a-zA-Z0-9_]|\-|\.)+@(([a-zA-Z0-9_]|\-)+\.)+[a-zA-Z]{2,4}$/;
         return reg.test(value);
     },
-    multiEmail: function (value) {
+    emails: function (value) {
         var temp = value.replace(/(\s*)/g, '').split(",");
         for (var index in temp) {
-            var tempMail = temp[index];
-            if (tempMail != "") {
-                if (!myclass.email(tempMail)) {
-                    return false;
+            if(temp.hasOwnProperty(index)) {
+                var tempMail = temp[index];
+                if (tempMail != "") {
+                    if (!myclass.email(tempMail)) {
+                        return false;
+                    }
                 }
             }
         }
@@ -48,18 +50,16 @@
         var level = 0;
         if (pwd != null && pwd != '') {
             var mode = 0;
-            if (pwd.length <= 4)
-                mode = 0;
-            else {
+            if (pwd.length > 4) {
                 for (i = 0; i < pwd.length; i++) {
                     var charMode, charCode;
                     charCode = pwd.charCodeAt(i);
-                    // 判断输入密码的类型
-                    if (charCode >= 48 && charCode <= 57) //数字  
+                    //Check the character of the password
+                    if (charCode >= 48 && charCode <= 57) //Number
                         charMode = 1;
-                    else if (charCode >= 65 && charCode <= 90) //大写  
+                    else if (charCode >= 65 && charCode <= 90) //UpperCase
                         charMode = 2;
-                    else if (charCode >= 97 && charCode <= 122) //小写  
+                    else if (charCode >= 97 && charCode <= 122) //LowerCase
                         charMode = 4;
                     else
                         charMode = 8;

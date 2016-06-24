@@ -7,7 +7,14 @@ NodeList.prototype.each = Array.prototype.each = function(callback){
             callback(this[i]);
         }
     }
-}
+};
+Array.prototype.contains = function(value){
+    for(var i=0; i<this.length; i++){
+        if(this[i] == value)
+            return true;
+    }
+    return false;
+};
 
 //object extend
 Object.prototype.extend = function(source){
@@ -16,23 +23,25 @@ Object.prototype.extend = function(source){
         self[key] = val;
     });
     return this;
-}
+};
 Object.prototype.each = function(callback){
     for(var key in this){
         if(this.hasOwnProperty(key)) {
             callback(this[key], key);
         }
     }
-}
+};
 Object.prototype.diff = function(compareObj){
     if(Object.keys(this).length != Object.keys(compareObj).length)
         return true;
     for(var key in this){
-        if(this[key] != compareObj[key])
+        if(this.hasOwnProperty(key) && this[key] != compareObj[key]) {
             return true;
+        }
     }
     return false;
-}
+};
+
 
 //element extend
 HTMLElement.prototype.attr = function(name, value){
@@ -40,5 +49,5 @@ HTMLElement.prototype.attr = function(name, value){
         return this.getAttribute(name);
     }
     this.setAttribute(name, value);
-}
+};
 HTMLElement.prototype.bind = HTMLElement.prototype.addEventListener;

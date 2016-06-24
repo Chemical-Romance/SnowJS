@@ -2,16 +2,16 @@
 <head>
     <meta charset="utf-8" />
     <style>
-      .text-red{
-        color:red;
-      }
-      .text-blue{
-        color:blue;
-      }
+        .text-red{
+            color:red;
+        }
+        .text-blue{
+            color:blue;
+        }
     </style>
 </head>
 <body>
-  <form data-script="this.style.backgroundColor = (age==10?'gray':'')">
+<form data-script="this.style.backgroundColor = (age==10?'gray':'')">
     Name: <input id="test" data-model="name" value="3"/><br/><br/>
     LastName: <input data-model="lastName"/></br/><br/>
     FullName: <input data-model="fullName" data-value="name+'1'+lastName" data-class="age==11?'text-red':'text-blue'"/><br/><br/>
@@ -22,61 +22,66 @@
     Marrige: <span data-value="married? 'Married' : 'Not married'"></span><br/><br/>
     Tab: <ul data-model="Tabs" data-view="tabs"><li>Tab1</li><li>Tab2</li></ul>
     <!--<select id="Selector" multiple>-->
-      <!--<option value="A">A</option>-->
-      <!--<option value="B">B</option>-->
+    <!--<option value="A">A</option>-->
+    <!--<option value="B">B</option>-->
     <!--</select>-->
-    <input type="button" value="提交" data-click="@submit"/>
-  </form>
-    <script type='text/javascript' src='js/base.js'></script>
-    <script type='text/javascript' src='js/form.js'></script>
-    <script type='text/javascript' src='js/validate.js'></script>
-    <script>
 
-      //extend view
-      Snow.Form.view.tabs = function(model){
+    <input type="button" value="重置Age" data-click="age=100"/>
+    <input type="button" value="更新" data-click="@update"/>
+    <input type="button" value="提交" data-click="@submit"/>
+</form>
+<script type='text/javascript' src='js/base.js'></script>
+<script type='text/javascript' src='js/form.js'></script>
+<script type='text/javascript' src='js/validate.js'></script>
+<script>
+
+    //extend view
+    Snow.Form.view.tabs = function(model){
         var items = this.children;
         items.each(function(o){
-          o.bind('click', function(){
-            var self = this;
-            items.each(function(item){
-              if(self == item){
-                item.style.color = 'red';
-              }
-              else{
-                item.style.color = 'black';
-              }
+            o.bind('click', function(){
+                var self = this;
+                items.each(function(item){
+                    if(self == item){
+                        item.style.color = 'red';
+                    }
+                    else{
+                        item.style.color = 'black';
+                    }
+                });
             });
-          });
         });
         return {
-          getValue: function(){
-            return 'Test';
-          },
-          setValue: function(){
-            console.log('set Tabs value');
-          }
+            getValue: function(){
+                return 'Test';
+            },
+            setValue: function(){
+                console.log('set Tabs value');
+            }
         }
 
-      }
+    }
 
-      var form = Snow.Form(document.querySelector('body'), {
+    var form = Snow.Form(document.querySelector('body'), {
         name: '三',
         lastName: '张',
         age: 12
-      });
+    });
 
-      //extend function
-      form.fn.test = function(model){
-        //alert(model.age);
-        console.log(this);
-      }
-      form.fn.submit = function(model){
+    //extend function
+    form.fn.update = function(model){
         console.log(model);
-      }
+        form.update({age: model.age + 90});
+    }
+    form.fn.submit = function(model){
+        form.submit(function(data){
+            console.log(data)
+        });
+    }
 
 
 
 
-    </script>
+</script>
 </body>
 </html>
