@@ -137,25 +137,25 @@ table{
 
 
 //== transition
-.transition-04{
+.transition{
     @include transition(all .4s);
 }
-.transition-top-04{
+.transition-top{
     @include transition(top .4s);
 }
-.transition-left-04{
+.transition-left{
     @include transition(left .4s);
 }
-.transition-width-04{
+.transition-width{
     @include transition(width .4s);
 }
-.transition-height-04{
+.transition-height{
     @include transition(height .4s);
 }
-.transition-transform-04{
+.transition-transform{
     @include transition(transform .4s);
 }
-.transition-opacity-04{
+.transition-opacity{
     @include transition(opacity .4s);
 }
 

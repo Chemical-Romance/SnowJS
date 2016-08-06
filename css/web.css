@@ -174,37 +174,37 @@ table {
 .overflow-y-hidden {
   overflow-y: hidden; }
 
-.transition-04 {
+.transition {
   -webkit-transition: all 0.4s;
   -o-transition: all 0.4s;
   transition: all 0.4s; }
 
-.transition-top-04 {
+.transition-top {
   -webkit-transition: top 0.4s;
   -o-transition: top 0.4s;
   transition: top 0.4s; }
 
-.transition-left-04 {
+.transition-left {
   -webkit-transition: left 0.4s;
   -o-transition: left 0.4s;
   transition: left 0.4s; }
 
-.transition-width-04 {
+.transition-width {
   -webkit-transition: width 0.4s;
   -o-transition: width 0.4s;
   transition: width 0.4s; }
 
-.transition-height-04 {
+.transition-height {
   -webkit-transition: height 0.4s;
   -o-transition: height 0.4s;
   transition: height 0.4s; }
 
-.transition-transform-04 {
+.transition-transform {
   -webkit-transition: transform 0.4s;
   -o-transition: transform 0.4s;
   transition: transform 0.4s; }
 
-.transition-opacity-04 {
+.transition-opacity {
   -webkit-transition: opacity 0.4s;
   -o-transition: opacity 0.4s;
   transition: opacity 0.4s; }

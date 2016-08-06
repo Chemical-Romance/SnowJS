@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>SnowJS example1</title>
     <link rel="stylesheet" href="css/web.css">
 </head>
 <body class="padding-large">
@@ -10,7 +10,7 @@
 <p class="f2 text-center">
     <span data-value="firstName"></span>
     <span data-value="lastName"></span>
-    is <span data-value="married? 'married' : 'not married'" data-script="this.css('color',(married?'red':'green'))"></span>.
+    is <span class="transition" data-value="married? 'married' : 'not married'" data-script="this.css('color',(married?'red':'green'))"></span>.
 </p>
 <br class="row-10" />
 <div class="margin-auto" style="width:30%">
@@ -22,7 +22,7 @@
 <script type='text/javascript' src='js/form.js'></script>
 <script type='text/javascript' src='js/validate.js'></script>
 <script>
-    Snow.Form(document.querySelector('body'));
+    Snow.Form('body');
 </script>
 </body>
 </html>

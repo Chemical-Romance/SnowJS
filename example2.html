@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SnowJS Example 2</title>
+    <link rel="stylesheet" href="css/web.css">
+    <style>
+        .left-p{
+            margin-left: -200px;
+            opacity: 0;
+        }
+        .right-p{
+            margin-right:-200px;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+<section class="text-center">
+    <br/><br/><br/><br/><br/>
+    <p class="f1" data-class="visible?'f1 transition':'f1 left-p transition'">I'm SnowJS.</p>
+    <p class="f4" data-class="visible?'f4 transition':'f4 right-p transition'" data-class-delay="400">I'm from China.</p>
+    <br/>
+    <p data-class="visible?'transition':'left-p transition'" data-class-delay="800">I have a gorgeous face!</p>
+    <p data-class="visible?'transition':'right-p transition'" data-class-delay="1200">I made javascript/html very simple as your can't imaged!</p>
+    <br/><br/><br/><br/><br/>
+    <input type="button" data-value="visible?'Fade out': 'Fade in'" data-click="visible=!visible" />
+</section>
+
+<script type='text/javascript' src='js/_base.js'></script>
+<script type='text/javascript' src='js/form.js'></script>
+<script type='text/javascript' src='js/validate.js'></script>
+<script>
+    Snow.Form('body',{model:{visible:true}});
+</script>
+</body>
+</html>
