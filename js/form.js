@@ -20,6 +20,7 @@ Snow.Form = function (dom, options) {
         templateList = [];
     var events = ['click', 'change', 'focus', 'blur', 'input', 'keydown', 'mouseover', 'mouseout', 'touchstart', 'touchend'],
         eventList = dom.findAll('[data-' + events.join('],[data-') + ']').toArray();
+    var updateViewTimer;
 
     var myclass = {
         fn: myOptions.fn, //user functions
@@ -59,12 +60,14 @@ Snow.Form = function (dom, options) {
                     dataType: 'json',
                     data: param,
                     success: function(ret){
-                        response = myOptions.responseHandler ? myOptions.responseHandler(ret) : ret;
-                        if(response === undefined)
-                            return;
-                        if(callback && typeof(callback) == 'function') {
-                            callback(model, response);
+                        var data = myOptions.responseHandler ? myOptions.responseHandler(ret) : ret;
+                        response = data || {};
+                        if(data !== undefined) {
+                            if (callback && typeof(callback) == 'function') {
+                                callback(model, response);
+                            }
                         }
+                        clearTimeout(updateViewTimer);
                         updateView();
                     }
                 })
@@ -253,8 +256,13 @@ Snow.Form = function (dom, options) {
         }
         else{
             //console.log('complete');
-            updateView();
+            delayUpdateView();
         }
+    }
+    function delayUpdateView(){
+        //delay to update the view
+        clearTimeout(updateViewTimer);
+        updateViewTimer = setTimeout(updateView, 100);
     }
     function updateTemplate(){
         //update template
@@ -271,12 +279,15 @@ Snow.Form = function (dom, options) {
         });
     }
     function updateView(){
+
+        console.log('update View');
+
         //update Template
         updateTemplate();
 
         //update data-model, data-value, data-script, data-class
-        if(!model.diff(lastChangeModel))
-            return;
+        //if(!model.diff(lastChangeModel))
+        //    return;
 
         //render model
         modelList.each(function(o){
@@ -297,7 +308,7 @@ Snow.Form = function (dom, options) {
                 delayRunScript(o, 'data-script', function(){
                     script(o, 'data-script');
                 });
-            }                
+            }
         });
 
         //set the lastChangeModel
