@@ -1,0 +1,6 @@
+
+@mixin appearance($control) {
+    appearance:$control;
+    -moz-appearance:$control; /* Firefox */
+    -webkit-appearance:$control; /* Safari and Chrome */
+}

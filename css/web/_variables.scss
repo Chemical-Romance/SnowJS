@@ -1,0 +1,66 @@
+//== Color
+$color-red:                 #b84233; 
+$color-cyan:                #00A9BD;
+$color-cyan-light:          #a8ced7;
+$color-pink:                #ec7bac;
+$color-green:               #cbd37a;
+$color-golden:              #ab9b59;
+$color-red:                 #de7878;
+$color-red-dark:            #e50011;
+$color-blue:                #7bacdc;
+$color-blue-dark:           #0259aa;
+$color-purple:              #a674af;
+$color-gray-light:          #c9c9ca;
+$color-text:                #717071 !default;
+$color-text-dark:           #595757 !default;
+$color-link:                #757575 !default;
+$color-link-hover:          darken(#757575, 15%) !default;
+$color-line:                 #c9c9c9;
+/*$color-line-light:           #e5e5e5;
+$color-background-gray:      #f5f5f5;
+$color-background-lightgray: #fafafa;*/
+$color-background-cyan:     #e7f5f7;
+$color-background-blue:     #eff5f7;
+$color-background-green:    #e1eeea;
+$color-disabled:            $gray-lighter;
+
+//== Button
+$button-height-base:         40px;
+$button-padding-base:        30px;
+$button-radius-base:         5px;
+$button-height-small:        40px;
+$button-padding-small:       30px;
+$button-radius-small:        7px;
+$button-height-smaller:      32px;
+$button-padding-smaller:     15px;
+$button-radius-smaller:      5px;
+$button-height-large:        50px;
+$button-padding-large:       40px;
+$button-radius-large:        10px;
+$button-height-larger:        70px;
+$button-padding-larger:       60px;
+$button-radius-larger:        20px;
+
+//== Textbox
+$textbox-height-base:         40px;
+$textbox-padding-base:        7px;
+$textbox-radius-base:         5px;
+$textbox-height-small:        40px;
+$textbox-padding-small:       30px;
+$textbox-radius-small:        7px;
+$textbox-height-smaller:      32px;
+$textbox-padding-smaller:     15px;
+$textbox-radius-smaller:      5px;
+$textbox-height-large:        60px;
+$textbox-padding-large:       50px;
+$textbox-radius-large:        15px;
+$textbox-height-larger:        70px;
+$textbox-padding-larger:       60px;
+$textbox-radius-larger:        20px;
+
+
+
+//== Padding
+$padding-base:                  18px;
+$padding-horizontal-large:      30px;
+$padding-vertical-large:        25px;

@@ -1,20 +1,38 @@
 //Snow Form
-Snow.Form = function(dom, model){
-    var self = this, lastModel, flag = 0,
-        modelList = dom.querySelectorAll('[data-model]'),
-        attrList = dom.querySelectorAll('[data-value], [data-class], [data-script]');
-    var events = ['click', 'change', 'focus', 'blur', 'input', 'keydown'],
-        eventList = dom.querySelectorAll('[data-' + events.join('],[data-') + ']');
+Snow.Form = function (dom, options) {
+    var myOptions = {
+        model: {},
+        requestHandler: undefined, //function(model){ return param; }
+        responseHandler: undefined, //function(response){ return data; }
+        response: {},
+        action: undefined,
+        method: 'get',
+        fn: {} //functions
+    };
+    myOptions.extend(options);
+
+    var dom = find(dom);
+    var model = myOptions.model;
+    var response = myOptions.response;
+    var self = this, lastModel, lastChangeModel, flag = 0,
+        modelList = dom.findAll('[data-model]').toArray(),
+        attrList = dom.findAll('[data-value], [data-class], [data-script]').toArray();
+        templateList = [];
+    var events = ['click', 'change', 'focus', 'blur', 'input', 'keydown', 'mouseover', 'mouseout', 'touchstart', 'touchend'],
+        eventList = dom.findAll('[data-' + events.join('],[data-') + ']').toArray();
 
     var myclass = {
-        fn: {}, //user functions
+        fn: myOptions.fn, //user functions
+        getModel: function () {
+            return model;
+        },
         update: function (newModel) { //update model and view
             flag = 0;
             model.extend(newModel);
             prepare();
         },
         submit: function (callback) {
-            var validList = dom.querySelectorAll('[data-validate]');
+            var validList = dom.findAll('[data-validate]');
             for (var i = 0; i < validList.length; i++) {
                 var o = validList[i];
                 var valid = validate(o);
@@ -30,13 +48,56 @@ Snow.Form = function(dom, model){
                     return;
                 }
             }
-            callback(model);
-            //console.log(model);
+
+            //send the form request
+            if(myOptions.action){
+                var param = myOptions.requestHandler ? myOptions.requestHandler(model) : model;
+                Snow.ajax({
+                    url: myOptions.action,
+                    type: myOptions.method,
+                    contentType: 'application/json',
+                    dataType: 'json',
+                    data: param,
+                    success: function(ret){
+                        response = myOptions.responseHandler ? myOptions.responseHandler(ret) : ret;
+                        if(response === undefined)
+                            return;
+                        if(callback && typeof(callback) == 'function') {
+                            callback(model, response);
+                        }
+                        updateView();
+                    }
+                })
+            }
+            else{
+                if(callback && typeof(callback) == 'function') {
+                    callback(model, response);
+                }
+            }
         }
     };
 
 
     function init(){
+        //extend submit fn
+        myOptions.fn.submit = myclass.submit;
+
+        //init templates
+        init.templates();
+
+        //append self
+        if (dom.attr('data-model')) {
+            modelList.splice(0, 0, dom);
+        }
+        if (dom.attr('data-value') || dom.attr('data-class') || dom.attr('data-script')) {
+            attrList.splice(0, 0, dom);
+        }
+        for (var i = 0; i < events.length; i++) {
+            if (dom.attr('data-' + events[i])) {
+                eventList.splice(0, 0, dom);
+                break;
+            }
+        }
 
         //init views
         init.views();
@@ -56,8 +117,16 @@ Snow.Form = function(dom, model){
         //init events
         init.events();
 
+        //init the window resize event
+        window.addEventListener('resize', myclass.update);
+
         //set lastModel
         lastModel = {}.extend(model);
+
+        //init service call
+        if(myOptions.action){
+            myclass.submit();
+        }
 
         prepare();
     }
@@ -100,26 +169,32 @@ Snow.Form = function(dom, model){
     };
     init.events = function(){
         //init user events
-        eventList.each(function(dom){
+        eventList.each(function(o){
             events.each(function(e){
                 var attr = 'data-' + e;
-                var event = dom.attr(attr);
-                if(event){
-                    if(event.indexOf('@') == 0){
-                        dom.bind(e, function(){myclass.fn[event.substring(1)].call(this, model);});
-                    }
-                    else {
-                        dom.bind(e, function () {
-                            script(this, attr);
-                            myclass.update(model);
-                        });
-                    }
+                if (o.attr(attr)) {
+                    o.bind(e, function () {
+                        script(this, attr);
+                        myclass.update(model);
+                    });
                 }
+                //var event = o.attr(attr);
+                //if(event){
+                //    if(event.indexOf('@') == 0){
+                //        o.bind(e, function(){myclass.fn[event.substring(1)].call(this, model);});
+                //    }
+                //    else {
+                //        o.bind(e, function () {
+                //            script(this, attr);
+                //            myclass.update(model);
+                //        });
+                //    }
+                //}
             });
         });
     };
     init.views = function(){
-        dom.querySelectorAll('[data-view]').each(function(o){
+        dom.findAll('[data-view]').each(function (o) {
             o.view = {}; //view instances
             o.attr('data-view').replace(/ /g, '').split(',').forEach(function (key) {
                 var fn = Snow.Form.view[key];
@@ -132,23 +207,40 @@ Snow.Form = function(dom, model){
         var key = this.attr('data-model');
         if(this._type && value !== ''){
             if(!Snow.Validate[this._type](value)){
-                console.log('invalid value');
+                //console.log('invalid value');
                 setValue(this, model[key]);
                 return;
             }
         }
         flag = 0;
         model[key] = unifyValue(this);
-        prepare(this);
+        prepare();
+    };
+    init.templates = function(){
+        dom.findAll('[data-template]').each(function(o){
+            var newDom = find('<div data-template="'+ o.attr('data-template')+'"></div>');
+            var tempObj = {
+                element: newDom,
+                template: o.html().replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+            }
+            templateList.push(tempObj);
+            o.replaceWith(newDom);
+        });
     };
 
-    function prepare(ignoreDom){
+
+    function prepare(){
         //prepare the model
         modelList.each(function(o){
-            if(o!= ignoreDom) {
-                var key = o.attr('data-model');
-                if (o.attr('data-value'))
-                    model[key] = script(o, 'data-value', true);
+            var key = o.attr('data-model');
+            if (o.attr('data-value')) {
+                var value = script(o, 'data-value', true);
+                model[key] = value;
+
+                //reset the value
+                if(getValue(o) != value){
+                    setValue(o, value);
+                }
             }
         });
         if(lastModel.diff(model)){
@@ -157,17 +249,38 @@ Snow.Form = function(dom, model){
             if(flag >=100){
                 console.log('Some code error');
             }
-            prepare(ignoreDom);
+            prepare();
         }
         else{
             //console.log('complete');
-            updateView(ignoreDom);
+            updateView();
         }
     }
-    function updateView(ignoreDom){
+    function updateTemplate(){
+        //update template
+        templateList.each(function(tempObj){
+            var o = tempObj.element;
+            var lastTempModel = tempObj.model;
+            var curTempModel = script(o, 'data-template', true) || {};
+            if(curTempModel.diff(lastTempModel)){
+                //render the template
+                var html = Snow.template(tempObj.template, curTempModel);
+                o.html(html);
+                tempObj.model = {}.extend(curTempModel);
+            }
+        });
+    }
+    function updateView(){
+        //update Template
+        updateTemplate();
+
+        //update data-model, data-value, data-script, data-class
+        if(!model.diff(lastChangeModel))
+            return;
+
         //render model
         modelList.each(function(o){
-            if(!o.attr('data-value') && o!= ignoreDom)
+            if(!o.attr('data-value'))
                 setValue(o, model[o.attr('data-model')]);
         });
 
@@ -175,15 +288,56 @@ Snow.Form = function(dom, model){
         attrList.each(function(o){
             if(o.attr('data-value'))
                 setValue(o, script(o, 'data-value', true));
-            if(o.attr('data-class'))
-                o.className = script(o, 'data-class', true);
-            if(o.attr('data-script'))
-                script(o, 'data-script');
+            if (o.attr('data-class')) {
+                delayRunScript(o, 'data-class', function(){
+                    o.className = script(o, 'data-class', true);
+                });
+            }
+            if (o.attr('data-script')) {
+                delayRunScript(o, 'data-script', function(){
+                    script(o, 'data-script');
+                });
+            }                
         });
+
+        //set the lastChangeModel
+        lastChangeModel = {}.extend(model);
     }
-    function script(o, attr, isReturn){
-        var str = 'with(obj){' + (isReturn ? 'return ':'') +' '+o.attr(attr)+'}';
-        return new Function('obj', str).call(o, model);
+    function script(o, attr, isReturn) {
+        var func = o.attr(attr);
+        if (func) {
+            if (func.indexOf('@') == 0) {
+                var fnName = func.substring(1);
+                //call form.fn
+                if(myclass.fn[fnName]){
+                    return myclass.fn[fnName].call(o, model);
+                }
+                //call Snow.Form.fn
+                if(Snow.Form.fn[fnName]){
+                    return Snow.Form.fn[fnName].call(o, model);
+                }
+                //undefined function
+                console.error('The function of "' + fnName + '" is not defined!');
+            }
+            else {
+                var str = 'with(model){' + (isReturn ? 'return ' : '') + ' ' + o.attr(attr) + '}';
+                return new Function('model', 'response', str).call(o, model, response);
+            }
+        }
+        
+        //var str = 'with(obj){' + (isReturn ? 'return ':'') +' '+o.attr(attr)+'}';
+        //return new Function('obj', str).call(o, model);
+    }
+    function delayRunScript(o, attr, event){
+        var delay = o.attr(attr + '-delay') || 0;
+        if(delay > 0){
+            var key = attr + '-timer';
+            clearTimeout(o.data(key));
+            o.data(key, setTimeout(event, delay));
+        }
+        else{
+            event();
+        }
     }
     function getValue(o){
         if(o.attr('data-view')){
@@ -225,7 +379,7 @@ Snow.Form = function(dom, model){
         else if(o.tagName == 'TEXTAREA'){
             return o.value;
         }
-        return o.innerHTML;
+        return o.html();
     }
     function setValue(o, value){
         if(o.attr('data-view')){
@@ -268,7 +422,7 @@ Snow.Form = function(dom, model){
         else if(o.tagName == 'TEXTAREA'){
             o.value = value;
         }
-        o.innerHTML = value;
+        o.html(value);
     }
     function unifyValue(o){
         var value = getValue(o);
@@ -346,9 +500,18 @@ Snow.Form = function(dom, model){
         return { success: true };
     }
 
-
+    //delay to init the function for initializing the functions
     init();
 
     return myclass;
 };
 Snow.Form.view = {};
+Snow.Form.fn = {};
+document.ready(function(){
+    findAll('[data-type="snowform"]').each(function(o){
+        Snow.Form(o, {
+            action: o.attr('data-action') || o.attr('action'),
+            method: o.attr('data-method') || o.attr('method')
+        });
+    });
+});

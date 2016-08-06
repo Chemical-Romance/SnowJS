@@ -14,7 +14,7 @@
 <form data-script="this.style.backgroundColor = (age==10?'gray':'')">
     Name: <input id="test" data-model="name" value="3"/><br/><br/>
     LastName: <input data-model="lastName"/></br/><br/>
-    FullName: <input data-model="fullName" data-value="name+'1'+lastName" data-class="age==11?'text-red':'text-blue'"/><br/><br/>
+    FullName: <input data-model="fullName" data-value="name+' '+lastName" data-class="age==11?'text-red':'text-blue'" data-class-delay="1000"/><br/><br/>
     Age: <input data-model="age" data-validate="int"/><br/><br/>
     AnotherAge: <span data-model="anotherAge" data-value="realAge+30"></span><br/><br/>
     RealAge: <span data-model="realAge" data-validate="int" data-value="age+1" data-script="this.style.color=(age>11?'red':'blue');"></span><br/><br/>
@@ -28,9 +28,9 @@
 
     <input type="button" value="重置Age" data-click="age=100"/>
     <input type="button" value="更新" data-click="@update"/>
-    <input type="button" value="提交" data-click="@submit"/>
+    <input type="button" value="提交" data-click="@submitForm"/>
 </form>
-<script type='text/javascript' src='js/base.js'></script>
+<script type='text/javascript' src='js/_base.js'></script>
 <script type='text/javascript' src='js/form.js'></script>
 <script type='text/javascript' src='js/validate.js'></script>
 <script>
@@ -63,23 +63,24 @@
     }
 
     var form = Snow.Form(document.querySelector('body'), {
-        name: '三',
-        lastName: '张',
-        age: 12
+        model:{
+            name: '三',
+            lastName: '张',
+            age: 12
+        },
+        fn: {
+            update: function(model){
+                console.log(model);
+                form.update({age: model.age + 90});
+            },
+            test: function(model){
+
+            },
+            submitForm: function(model){
+                console.log(model)
+            }
+        }
     });
-
-    //extend function
-    form.fn.update = function(model){
-        console.log(model);
-        form.update({age: model.age + 90});
-    }
-    form.fn.submit = function(model){
-        form.submit(function(data){
-            console.log(data)
-        });
-    }
-
-
 
 
 </script>

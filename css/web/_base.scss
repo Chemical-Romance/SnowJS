@@ -1,0 +1,127 @@
+body
+{
+    font-family:$font-family-chinese;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    margin: 0;
+    overflow-x: hidden;
+    color: $color-text;
+}
+
+//== Global
+td, input{
+    font-family:$font-family-base;
+}
+
+//== Link
+a{
+    color: $color-link;
+    text-decoration: none;
+    
+    &:hover{
+        color: $color-link-hover;
+    }
+}
+
+
+//== Text Color
+.text-gray{
+    color: $color-text;
+}
+.text-gray-dark{
+    color: $color-text-dark;
+}
+.text-cyan{
+    color: $color-cyan;
+}
+.text-pink{
+    color: $color-pink;
+}
+.text-red{
+    color: $color-red;
+}
+.text-red-dark{
+    color: $color-red-dark;
+}
+.text-green{
+    color: $color-green;
+}
+.text-blue-dark{
+    color:$color-blue-dark;
+}
+.text-purple{
+    color:$color-purple;
+}
+
+
+//== Background
+.background-white{
+    background: white;
+}
+.background-cyan{
+    background: $color-background-cyan;
+}
+
+
+//== Box
+.box-round-white{
+    background: white;
+    border-radius: 8px;
+    padding: 5px 8px;
+}
+.box-round-cyan{
+    background: $color-background-cyan;
+    border-radius: 8px;
+    padding: 5px 8px;
+}
+.box-round-green{
+    background: $color-background-green;
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+.box-green{
+    background: $color-background-green;
+    padding: 10px 8px;
+}
+
+//padding
+.padding{
+    padding: $padding-base;
+}
+.padding-large{
+    padding: $padding-vertical-large $padding-horizontal-large;
+}
+.padding-horizontal{
+    padding: 0 $padding-base;
+}
+.padding-horizontal-large{
+    padding: 0 $padding-horizontal-large;
+}
+
+//margin
+.margin-center{
+    margin: 0 auto;
+}
+.margin-horizontal{
+    margin: 0 $padding-base;
+}
+.margin-horizontal-large{
+    margin: 0 $padding-horizontal-large;
+}
+//width
+.width-full{
+    width: 100%;
+}
+
+//line
+hr{
+    border-top: 1px dashed $color-cyan;
+    border-bottom: 0;
+    height: 0;
+    &.pink{
+        border-top: 1px dashed $color-pink;
+    }
+    &.green{
+        border-top: 1px dashed $color-green;
+    }
+}

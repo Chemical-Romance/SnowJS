@@ -34,8 +34,8 @@ Snow.template = function (html, data, callback, nocache) {
     }
     function template(html, data) {
         var re = /<%(.+?)%>/g,
-            reExp = /(^( )?(var|if|for|else|switch|case|break|{|}|;))(.*)?/g,
-            code = 'with(obj) { var r=[];\n',
+            reExp = /(^( )?(var|if|for|else|switch|case|break|console|debugger|{|}|;))(.*)?/g,
+            code = 'with(data) { var r=[];\n',
             cursor = 0,
             result;
         var add = function (line, js) {
@@ -49,7 +49,7 @@ Snow.template = function (html, data, callback, nocache) {
         }
         add(html.substr(cursor, html.length - cursor));
         code = (code + 'return r.join(""); }').replace(/[\r\t\n]/g, ' ');
-        try { result = new Function('obj', code).apply(data, [data]); }
+        try { result = new Function('data', code).apply(data, [data]); }
         catch (err) { console.error("'" + err.message + "'", " in \n\nCode:\n", code, "\n"); }
         return result;
     }
