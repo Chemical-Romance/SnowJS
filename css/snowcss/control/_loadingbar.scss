@@ -5,7 +5,7 @@
     width: 300px;
     margin-top: -60px;
     margin-left: -150px;
-    z-index: $zindex-loadingbar;
+    z-index: 3000;
     cursor: wait;
 
     .loading{

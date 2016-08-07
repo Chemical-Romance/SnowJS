@@ -1,127 +1,94 @@
 body
 {
-    font-family:$font-family-chinese;
+    font-family: $font-family-chinese;
     font-size: $font-size-base;
-    line-height: $line-height-base;
     margin: 0;
-    overflow-x: hidden;
     color: $color-text;
+    background: $background-color;
+    line-height: $line-height-base;
+    overflow-x: hidden;
 }
 
-//== Global
-td, input{
-    font-family:$font-family-base;
+//== Font size
+.f1, h1 { font-size: $font-size-1; }
+.f2, h2 { font-size: $font-size-2; }
+.f3, h3 { font-size: $font-size-3; }
+.f4, h4 { font-size: $font-size-4; }
+.f5, h5 { font-size: $font-size-5; }
+.f6, h6 { font-size: $font-size-6; }
+.f7{ font-size:$font-size-7; }
+.f8{ font-size:$font-size-8; }
+h1, h2, h3, h4, h5, h6{
+    font-weight:normal;
+    margin:0;
 }
 
-//== Link
 a{
-    color: $color-link;
+    color: $link-color;
     text-decoration: none;
-    
-    &:hover{
-        color: $color-link-hover;
+    cursor: pointer;
+    &:hover, &:active{
+        color: $link-hover-color;
+        text-decoration: $link-hover-decoration;
     }
 }
+input, textarea{
+    font-family: $font-family-chinese;
+    font-size:$font-size-base;
+}
+input[type="checkbox"]{
+    vertical-align: middle;
+}
 
+hr{
+    background: $color-line;
+    border:0;
+    height:1px;
+    margin:0;
+}
 
 //== Text Color
 .text-gray{
-    color: $color-text;
+    color: $gray;
 }
 .text-gray-dark{
-    color: $color-text-dark;
+    color: $gray-dark;
 }
-.text-cyan{
-    color: $color-cyan;
+.text-gray-darker{
+    color: $gray-darker;
 }
-.text-pink{
-    color: $color-pink;
+.text-gray-light{
+    color: $gray-light;
+}
+.text-gray-lighter{
+    color: $gray-lighter;
 }
 .text-red{
     color: $color-red;
 }
-.text-red-dark{
-    color: $color-red-dark;
-}
-.text-green{
-    color: $color-green;
-}
-.text-blue-dark{
-    color:$color-blue-dark;
-}
-.text-purple{
-    color:$color-purple;
-}
-
-
-//== Background
-.background-white{
-    background: white;
-}
-.background-cyan{
-    background: $color-background-cyan;
-}
-
-
-//== Box
-.box-round-white{
-    background: white;
-    border-radius: 8px;
-    padding: 5px 8px;
-}
-.box-round-cyan{
-    background: $color-background-cyan;
-    border-radius: 8px;
-    padding: 5px 8px;
-}
-.box-round-green{
-    background: $color-background-green;
-    border-radius: 8px;
-    padding: 10px 15px;
-}
-.box-green{
-    background: $color-background-green;
-    padding: 10px 8px;
-}
 
 //padding
 .padding{
-    padding: $padding-base;
+    padding: $padding-vertical-base $padding-horizontal-base;
 }
 .padding-large{
     padding: $padding-vertical-large $padding-horizontal-large;
 }
+.padding-small{
+    padding: $padding-vertical-small $padding-horizontal-small;
+}
 .padding-horizontal{
-    padding: 0 $padding-base;
+    padding: 0 $padding-horizontal-base;
 }
 .padding-horizontal-large{
     padding: 0 $padding-horizontal-large;
 }
-
-//margin
-.margin-center{
-    margin: 0 auto;
-}
-.margin-horizontal{
-    margin: 0 $padding-base;
-}
-.margin-horizontal-large{
-    margin: 0 $padding-horizontal-large;
-}
-//width
-.width-full{
-    width: 100%;
+.padding-horizontal-small{
+    padding: 0 $padding-horizontal-small;
 }
 
-//line
-hr{
-    border-top: 1px dashed $color-cyan;
-    border-bottom: 0;
-    height: 0;
-    &.pink{
-        border-top: 1px dashed $color-pink;
-    }
-    &.green{
-        border-top: 1px dashed $color-green;
-    }
+
+//unselect
+.unselect {
+    @include user-select(none);
 }

@@ -2,17 +2,24 @@
 Snow.Form = function (dom, options) {
     var myOptions = {
         model: {},
-        requestHandler: undefined, //function(model){ return param; }
-        responseHandler: undefined, //function(response){ return data; }
-        response: {},
+        fn: {}, //functions
+
+        //ajax
         action: undefined,
         method: 'get',
-        fn: {} //functions
+        response: {},
+        requestHandler: undefined, //function(model){ return param; }
+        responseHandler: undefined, //function(response){ return data; }
+
+        //validate
+        invalidHandler: undefined, //function(invalidMesage){}
+
     };
     myOptions.extend(options);
 
     var dom = find(dom);
     var model = myOptions.model;
+    var originalModel;
     var response = myOptions.response;
     var self = this, lastModel, lastChangeModel, flag = 0,
         modelList = dom.findAll('[data-model]').toArray(),
@@ -20,7 +27,8 @@ Snow.Form = function (dom, options) {
         templateList = [];
     var events = ['click', 'change', 'focus', 'blur', 'input', 'keydown', 'mouseover', 'mouseout', 'touchstart', 'touchend'],
         eventList = dom.findAll('[data-' + events.join('],[data-') + ']').toArray();
-    var updateViewTimer;
+        messageList = dom.findAll('[data-message]').toArray();
+    var updateViewTimer, invalidDom;
 
     var myclass = {
         fn: myOptions.fn, //user functions
@@ -44,11 +52,26 @@ Snow.Form = function (dom, options) {
                     //else {
                     //    alert(valid.message);
                     //}
-                    alert(valid.message);
+                    if(myOptions.invalidHandler){
+                        myOptions.invalidHandler(valid.message);
+                    }
+
+                    //show message
+                    messageList.each(function(o){
+                        o.css('visibility', 'visible');
+                        setValue(o, valid.message);
+                    });
                     o.focus();
+                    invalidDom = o;
                     return;
                 }
             }
+
+            //hide message doms
+            invalidDom = null;
+            messageList.each(function(o){
+                o.css('visibility', 'hidden');
+            });
 
             //send the form request
             if(myOptions.action){
@@ -77,13 +100,21 @@ Snow.Form = function (dom, options) {
                     callback(model, response);
                 }
             }
+        },
+        reset: function(){
+            myclass.update(originalModel);
+            //hide the message
+            messageList.each(function(o){
+                o.css('visibility', 'hidden');
+            });
         }
     };
 
 
     function init(){
         //extend submit fn
-        myOptions.fn.submit = myclass.submit;
+        //myOptions.fn.submit = myclass.submit;
+        myOptions.fn.extend(myclass);
 
         //init templates
         init.templates();
@@ -124,7 +155,7 @@ Snow.Form = function (dom, options) {
         window.addEventListener('resize', myclass.update);
 
         //set lastModel
-        lastModel = {}.extend(model);
+        originalModel = lastModel = {}.extend(model);
 
         //init service call
         if(myOptions.action){
@@ -206,6 +237,13 @@ Snow.Form = function (dom, options) {
         });
     };
     init.change = function(){
+        //reset the invalid dom
+        if(invalidDom && invalidDom == this && messageList.length){
+            messageList.each(function(o){
+                o.css('visibility', 'hidden');
+            });
+        }
+
         var value = getValue(this);
         var key = this.attr('data-model');
         if(this._type && value !== ''){
@@ -217,7 +255,7 @@ Snow.Form = function (dom, options) {
         }
         flag = 0;
         model[key] = unifyValue(this);
-        prepare();
+        prepare(this);
     };
     init.templates = function(){
         dom.findAll('[data-template]').each(function(o){
@@ -232,7 +270,7 @@ Snow.Form = function (dom, options) {
     };
 
 
-    function prepare(){
+    function prepare(curDom){
         //prepare the model
         modelList.each(function(o){
             var key = o.attr('data-model');
@@ -252,17 +290,17 @@ Snow.Form = function (dom, options) {
             if(flag >=100){
                 console.log('Some code error');
             }
-            prepare();
+            prepare(curDom);
         }
         else{
             //console.log('complete');
-            delayUpdateView();
+            delayUpdateView(curDom);
         }
     }
-    function delayUpdateView(){
+    function delayUpdateView(curDom){
         //delay to update the view
         clearTimeout(updateViewTimer);
-        updateViewTimer = setTimeout(updateView, 100);
+        updateViewTimer = setTimeout(function(){updateView(curDom);}, 100);
     }
     function updateTemplate(){
         //update template
@@ -278,9 +316,9 @@ Snow.Form = function (dom, options) {
             }
         });
     }
-    function updateView(){
+    function updateView(curDom){
 
-        console.log('update View');
+        //console.log('update View');
 
         //update Template
         updateTemplate();
@@ -291,8 +329,9 @@ Snow.Form = function (dom, options) {
 
         //render model
         modelList.each(function(o){
-            if(!o.attr('data-value'))
+            if(o != curDom && !o.attr('data-value')) {
                 setValue(o, model[o.attr('data-model')]);
+            }
         });
 
         //render attribute
@@ -453,10 +492,10 @@ Snow.Form = function (dom, options) {
         var name = o.attr('data-model');
         var value = name ? model[name] : getValue(o);
         temp = temp.replace(/\\,/g, '@@');
-        var vals = temp.split(',');
+        var vals = temp.split(' ');
         var isList = vals.contains('list');
         for (var i = 0; i < vals.length; i++) {
-            var valKey = vals[i].replace(/ /g, '');
+            var valKey = vals[i];
             if (valKey == 'required') {
                 var msg = o.attr('data-requiredmsg') || 'This field is required.';
                 if (isList) {
@@ -468,7 +507,7 @@ Snow.Form = function (dom, options) {
                     return { success: false, message: msg };
                 }
             }
-            else if (valKey != 'list') {
+            else if (valKey && valKey != 'list') {
                 if (isList) {
                     //check every item in the value
                     if (value && value.length) {

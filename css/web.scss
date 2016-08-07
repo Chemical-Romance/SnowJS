@@ -1,18 +1,12 @@
 //== Common
-@import "common/variables";
-@import "common/mixins";
-@import "common/base";
-@import "common/responsive";
-@import "common/grid";
-@import "common/float";
-@import "common/list";
-//@import "common/tree";
-//@import "common/alert";
-//@import "common/row";
-//@import "common/control/slider";
-//@import "common/control/imagebox";
-//@import "common/control/popover";
-//@import "common/control/popups";
+@import "snowcss/variables";
+@import "snowcss/mixins";
+@import "snowcss/base";
+@import "snowcss/responsive";
+@import "snowcss/grid";
+@import "snowcss/row";
+@import "snowcss/float";
+
 
 
 //== Web

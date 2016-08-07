@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SnowJS Example 3</title>
+    <link rel="stylesheet" href="css/web.css">
+    <style>
+        table td{
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<p class="row-20"></p>
+
+<form data-type="snowform" class="text-center">
+    <p class="f1">User Information</p>
+    <p class="row-10"></p>
+    <table class="margin-auto">
+        <tr>
+            <td><b class="text-red">*</b>Name: </td>
+            <td><input data-model="Name" type="text" data-validate="required" value="John Jackson" data-requiredmsg="Please enter your name." /></td>
+        </tr>
+        <tr>
+            <td><b class="text-red">*</b>Age: </td>
+            <td><input data-model="Age" type="text" data-validate="required int" value="20" data-requiredmsg="Please enter your age." /></td>
+        </tr>
+        <tr>
+            <td><b class="text-red">*</b>Email: </td>
+            <td><input data-model="Email" type="text" data-validate="required email" data-requiredmsg="Please enter your email." data-invalidmsg="Please enter the right email." /></td>
+        </tr>
+        <tr>
+            <td>Mobile: </td>
+            <td><input data-model="Mobile" type="text" data-validate="phone" data-invalidmsg="Please enter the correct mobile phone." /></td>
+        </tr>
+        <tr>
+            <td>Website: </td>
+            <td><input data-model="Website" type="text" data-validate="url" data-invalidmsg="The format of website is incorrect." /></td>
+        </tr>
+    </table>
+    <div>
+        <p data-message class="row-5 text-center text-red"></p>
+        <p class="row-10"></p>
+        <input type="button" data-click="@submit" value="Submit"/>
+        <input type="button" data-click="@reset" value="Reset"/>
+    </div>
+</form>
+<p class="row-20"></p>
+
+<script type='text/javascript' src='js/_base.js'></script>
+<script type='text/javascript' src='js/form.js'></script>
+<script type='text/javascript' src='js/validate.js'></script>
+<script type='text/javascript' src='js/template.js'></script>
+</body>
+</html>

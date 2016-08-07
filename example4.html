@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SnowJS Example 3</title>
+    <link rel="stylesheet" href="css/web.css">
+    <style>
+        table td, th{
+            padding: 5px;
+            width: 150px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<p class="row-20"></p>
+<script type="text/template" data-template="model">
+    <table class="margin-auto">
+        <tr>
+            <th>Name</th><th>Age</th><th>Email</th>
+        </tr>
+        <%if(this.dataList){%>
+            <%for(var i=0;i<dataList.length;i++){var item = dataList[i];%>
+                <tr>
+                    <td><%item.name%></td><td><%item.age%></td><td><%item.email%></td>
+                </tr>
+            <%}%>
+        <%}%>
+    </table>
+    <p class="row-10"></p>
+    <p class="text-center f5">Total user: <%dataCount%></p>
+</script>
+<p class="row-20"></p>
+
+<script type='text/javascript' src='js/_base.js'></script>
+<script type='text/javascript' src='js/form.js'></script>
+<script type='text/javascript' src='js/validate.js'></script>
+<script type='text/javascript' src='js/template.js'></script>
+
+<script>
+    Snow.Form('body',{
+        model:{
+            dataCount: 3,
+            dataList:[
+                {
+                    name: 'John Jackson',
+                    age: 20,
+                    email: 'john@snowbeasts.com'
+                },
+                {
+                    name: 'Lisa Ann',
+                    age: 18,
+                    email: 'lisa@snowbeasts.com'
+                },
+                {
+                    name: 'Jessie Terry',
+                    age: 19,
+                    email: 'jessie@snowbeasts.com'
+                }
+            ]
+        }
+    })
+</script>
+</body>
+</html>

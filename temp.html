@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<%for(var i=0;i<this.dataList.length;i++){
+var item = dataList[i];
+%>
+<tr>
+    <td><%item.name%></td><td><%item.age%></td><td><%item.email%></td>
+</tr>
+<%}%>
+</body>
+</html>

@@ -5,24 +5,23 @@
     <title>SnowJS example1</title>
     <link rel="stylesheet" href="css/web.css">
 </head>
-<body class="padding-large">
-
-<p class="f2 text-center">
+<body class="padding-large" data-type="snowform">
+<p class="row-20"></p>
+<p class="f1 text-center">
     <span data-value="firstName"></span>
     <span data-value="lastName"></span>
     is <span class="transition" data-value="married? 'married' : 'not married'" data-script="this.css('color',(married?'red':'green'))"></span>.
 </p>
 <br class="row-10" />
-<div class="margin-auto" style="width:30%">
+<div class="text-center">
     First Name: <input type="text" data-model="firstName" value="John" /><br/><br/>
     Last Name: <input type="text" data-model="lastName" value="Jackson" /><br/><br/>
-    Married: <input type="checkbox" data-model="married" />
+    <input id="chk" type="checkbox" data-model="married" /> <label for="chk">Married</label>
 </div>
 <script type='text/javascript' src='js/_base.js'></script>
 <script type='text/javascript' src='js/form.js'></script>
 <script type='text/javascript' src='js/validate.js'></script>
-<script>
-    Snow.Form('body');
-</script>
+<script type='text/javascript' src='js/template.js'></script>
+
 </body>
 </html>

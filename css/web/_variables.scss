@@ -1,66 +1,136 @@
 //== Color
-$color-red:                 #b84233; 
-$color-cyan:                #00A9BD;
-$color-cyan-light:          #a8ced7;
-$color-pink:                #ec7bac;
-$color-green:               #cbd37a;
-$color-golden:              #ab9b59;
-$color-red:                 #de7878;
-$color-red-dark:            #e50011;
-$color-blue:                #7bacdc;
-$color-blue-dark:           #0259aa;
-$color-purple:              #a674af;
-$color-gray-light:          #c9c9ca;
-$color-text:                #717071 !default;
-$color-text-dark:           #595757 !default;
-$color-link:                #757575 !default;
-$color-link-hover:          darken(#757575, 15%) !default;
-$color-line:                 #c9c9c9;
-/*$color-line-light:           #e5e5e5;
+$gray-base: #222 !default;
+$gray-darker: lighten($gray-base, 13.5%) !default; // #444
+$gray-dark: lighten($gray-base, 20%) !default; // #555
+$gray: lighten($gray-base, 33.5%) !default; // #777
+$gray-light: lighten($gray-base, 46.7%) !default; // #999
+$gray-lighter: lighten($gray-base, 73.5%) !default; // #ddd
+
+$background-color: white;
+$text-color: $gray-dark !default;
+
+//** Global textual link color.
+$link-color: #337ab7 !default;
+$link-hover-color: darken($link-color, 15%) !default;
+$link-hover-decoration: underline !default;
+
+$color-orange:              #ef8314;
+$color-red:                 #fa675d;
+$color-yellow:              #ffd000;
+$color-blue:                #419ff6;
+$color-green:               #5bb85b;
+$color-cyan:                #1bc6b4;
+
+$color-line:                 #ddd;
+$color-line-light:           #e5e5e5;
 $color-background-gray:      #f5f5f5;
-$color-background-lightgray: #fafafa;*/
-$color-background-cyan:     #e7f5f7;
-$color-background-blue:     #eff5f7;
-$color-background-green:    #e1eeea;
-$color-disabled:            $gray-lighter;
+$color-background-lightgray: #fafafa;
+$color-background-darkgray:  #4d4d4d;
+$color-background-darkblue:  #596273;
+
+//Main colors
+
+$color-line:               $colord;
+$color-line-light:         $colore;
+$color-text:               $gray-darker;
+
+
+
+
+//== Typography
+//
+//## Font, line-height, and color for body text, headings, and more.
+
+$font-family-chinese: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+$font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-serif: Georgia, "Times New Roman", Times, serif !default;
+//** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
+$font-family-monospace: Menlo, Monaco, Consolas, "Courier New", monospace !default;
+$font-family-base: $font-family-chinese !default;
+
+$font-size-base: 14px !default;
+$font-size-large: ceil(($font-size-base * 1.25)) !default; // ~18px
+$font-size-small: ceil(($font-size-base * 0.85)) !default; // ~12px
+
+/*$font-size-h1: floor(($font-size-base * 2.6)) !default; // ~36px
+$font-size-h2: floor(($font-size-base * 2.15)) !default;  // ~30px
+$font-size-h3: ceil(($font-size-base * 1.7)) !default;    // ~24px
+$font-size-h4: ceil(($font-size-base * 1.25)) !default;   // ~18px
+$font-size-h5: $font-size-base !default;                  // ~14px
+$font-size-h6: ceil(($font-size-base * 0.85)) !default;   // ~12px*/
+
+$font-size-1: floor(($font-size-base * 2.6)) !default; // ~36px
+$font-size-2: floor(($font-size-base * 2.15)) !default;// ~30px
+$font-size-3: ceil(($font-size-base * 1.7)) !default;  // ~24px
+$font-size-4: ceil(($font-size-base * 1.45)) !default; // ~20px
+$font-size-5: ceil(($font-size-base * 1.25)) !default; // ~18px
+$font-size-6: $font-size-base !default;                // ~14px
+$font-size-7: ceil(($font-size-base * 0.85)) !default; // ~12px
+$font-size-8: ceil(($font-size-base * 0.75)) !default; // ~11px
+
+
+//** Unit-less `line-height` for use in components like buttons.
+/*$line-height-base: 1.428571429 !default; // 20/14*/
+$line-height-base: 1.571428571 !default; // 22/14
+//** Computed "line-height" (`font-size` * `line-height`) for use with `margin`, `padding`, etc.
+$line-height-computed: floor(($font-size-base * $line-height-base)) !default; // ~20px
+
+
+//== Padding
+
+$padding-base-vertical: 6px !default;
+$padding-base-horizontal: 12px !default;
+
+$padding-large-vertical: 10px !default;
+$padding-large-horizontal: 16px !default;
+
+$padding-small-vertical: 5px !default;
+$padding-small-horizontal: 10px !default;
+
+$padding-xs-vertical: 1px !default;
+$padding-xs-horizontal: 5px !default;
+
+$padding-xl-vertical: 20px !default;
+$padding-xl-horizontal: 32px !default;
+
+
+
 
 //== Button
-$button-height-base:         40px;
-$button-padding-base:        30px;
+$button-height-base:         32px;
+$button-padding-base:        15px;
 $button-radius-base:         5px;
-$button-height-small:        40px;
-$button-padding-small:       30px;
-$button-radius-small:        7px;
-$button-height-smaller:      32px;
-$button-padding-smaller:     15px;
-$button-radius-smaller:      5px;
-$button-height-large:        50px;
-$button-padding-large:       40px;
-$button-radius-large:        10px;
-$button-height-larger:        70px;
-$button-padding-larger:       60px;
-$button-radius-larger:        20px;
-
-//== Textbox
-$textbox-height-base:         40px;
-$textbox-padding-base:        7px;
-$textbox-radius-base:         5px;
-$textbox-height-small:        40px;
-$textbox-padding-small:       30px;
-$textbox-radius-small:        7px;
-$textbox-height-smaller:      32px;
-$textbox-padding-smaller:     15px;
-$textbox-radius-smaller:      5px;
-$textbox-height-large:        60px;
-$textbox-padding-large:       50px;
-$textbox-radius-large:        15px;
-$textbox-height-larger:        70px;
-$textbox-padding-larger:       60px;
-$textbox-radius-larger:        20px;
-
+$button-height-small:        28px;
+$button-padding-small:       9px;
+$button-radius-small:        3px;
+$button-height-smaller:      22px;
+$button-padding-smaller:     4px;
+$button-radius-smaller:      2px;
+$button-height-large:        40px;
+$button-padding-large:       30px;
+$button-radius-large:        7px;
+$button-height-larger:       50px;
+$button-padding-larger:      40px;
+$button-radius-larger:       10px;
 
 
 //== Padding
 $padding-base:                  18px;
-$padding-horizontal-large:      30px;
-$padding-vertical-large:        25px;
+$padding-horizontal-base:       18px;
+$padding-vertical-base:         14px;
+$padding-horizontal-large:      25px;
+$padding-vertical-large:        30px;
+$padding-horizontal-small:      10px;
+$padding-vertical-small:        15px;
+
+
+//== Saas global z-index
+//
+$zindex-menu:                  1;
+$zindex-main:                  2;
+$zindex-tree:                  3;
+$zindex-form:                  4;
+$zindex-header:                100;
+$zindex-dropdown:              3000;
+$zindex-popup:                 3000;
+$zindex-loadingbar:            3000;

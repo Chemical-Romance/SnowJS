@@ -1,0 +1,15 @@
+.float-fluid{
+    @include clearfix();
+    .l{
+        float:left;
+    }
+    .r{
+        float:right;
+    }
+}
+.float-left{
+    float: left;
+}
+.float-right{
+    float: right;
+}

@@ -7,22 +7,6 @@ p{
     margin:0;
 }
 
-
-//== Font size
-.f1, h1 { font-size: $font-size-1; }
-.f2, h2 { font-size: $font-size-2; }
-.f3, h3 { font-size: $font-size-3; }
-.f4, h4 { font-size: $font-size-4; }
-.f5, h5 { font-size: $font-size-5; }
-.f6, h6 { font-size: $font-size-6; }
-.f7{ font-size:$font-size-7; }
-.f8{ font-size:$font-size-8; }
-h1, h2, h3, h4, h5, h6{
-    font-weight:normal;
-    margin:0;
-}
-
-
 //== Image
 img{
     border:0;
@@ -56,22 +40,6 @@ table{
 .text-black{
     color: black;
 }
-.text-gray{
-    color: $gray;
-}
-.text-gray-dark{
-    color: $gray-dark;
-}
-.text-gray-darker{
-    color: $gray-darker;
-}
-.text-gray-light{
-    color: $gray-light;
-}
-.text-gray-lighter{
-    color: $gray-lighter;
-}
-
 
 //== Font weight
 .text-bold{
@@ -83,7 +51,6 @@ table{
 .text-lighter{
     font-weight:lighter !important;
 }
-
 
 //== Text align, vertical-align
 .text-left{
@@ -108,7 +75,6 @@ table{
     vertical-align:baseline !important;
 }
 
-
 //== Disply: block, inline, inline-block
 .hide{
     display: none;
@@ -123,7 +89,6 @@ table{
     display:inline-block !important;
 }
 
-
 //== Overflow
 .overflow-hidden{
     overflow:hidden;
@@ -135,33 +100,44 @@ table{
     overflow-y:hidden;
 }
 
-
 //== transition
 .transition{
-    @include transition(all .4s);
+    @include transition(all $transition);
+    &.slow{
+        @include transition(all $transition-slow);
+    }
 }
 .transition-top{
-    @include transition(top .4s);
+    @include transition(top $transition);
+    &.slow{
+        @include transition(top $transition-slow);
+    }
 }
 .transition-left{
-    @include transition(left .4s);
-}
-.transition-width{
-    @include transition(width .4s);
-}
-.transition-height{
-    @include transition(height .4s);
-}
-.transition-transform{
-    @include transition(transform .4s);
+    @include transition(left $transition);
+    &.slow{
+        @include transition(left $transition-slow);
+    }
 }
 .transition-opacity{
-    @include transition(opacity .4s);
+    @include transition(opacity $transition);
+    &.slow{
+        @include transition(opacity $transition-slow);
+    }
 }
 
 //== width
 .width-full{
     width: 100%;
+}
+.width-half{
+    width: 50%;
+}
+.width-oneThird{
+    width: 33.333%
+}
+.width-quarter{
+    width: 25%;
 }
 
 //== margin
@@ -180,4 +156,7 @@ table{
 //== cursor
 .cursor-pointer{
     cursor: pointer;
+}
+.cursor-default{
+    cursor: default;
 }
