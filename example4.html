@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SnowJS Example 3</title>
+    <title>SnowJS Example 4</title>
     <link rel="stylesheet" href="css/web.css">
     <style>
         table td, th{
@@ -12,9 +12,12 @@
         }
     </style>
 </head>
-<body>
+<body class="text-center">
 <p class="row-20"></p>
+<p class="text-center f5">I have <span data-value="dataList.length"></span> <span data-value="dataList.length>1?'friends':'friend'"></span> in the list.</p>
 <script type="text/template" data-template="model">
+    <p class="row-10"></p>
+
     <table class="margin-auto">
         <tr>
             <th>Name</th><th>Age</th><th>Email</th>
@@ -28,10 +31,10 @@
             <%}%>
         <%}%>
     </table>
-    <p class="row-10"></p>
-    <p class="text-center f5">Total user: <%dataCount%></p>
 </script>
 <p class="row-20"></p>
+<input type="button" data-click="dataList.pop();" value="Remove friend" />
+<input type="submit" data-click="@reset" value="Recovery" />
 
 <script type='text/javascript' src='js/_base.js'></script>
 <script type='text/javascript' src='js/form.js'></script>
@@ -41,7 +44,6 @@
 <script>
     Snow.Form('body',{
         model:{
-            dataCount: 3,
             dataList:[
                 {
                     name: 'John Jackson',

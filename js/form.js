@@ -19,9 +19,8 @@ Snow.Form = function (dom, options) {
 
     var dom = find(dom);
     var model = myOptions.model;
-    var originalModel;
     var response = myOptions.response;
-    var self = this, lastModel, lastChangeModel, flag = 0,
+    var self = this, originalModel, lastModel, lastChangeModel, flag = 0,
         modelList = dom.findAll('[data-model]').toArray(),
         attrList = dom.findAll('[data-value], [data-class], [data-script]').toArray();
         templateList = [];
@@ -102,7 +101,7 @@ Snow.Form = function (dom, options) {
             }
         },
         reset: function(){
-            myclass.update(originalModel);
+            myclass.update({}.extend(true, originalModel));
             //hide the message
             messageList.each(function(o){
                 o.css('visibility', 'hidden');
@@ -155,14 +154,14 @@ Snow.Form = function (dom, options) {
         window.addEventListener('resize', myclass.update);
 
         //set lastModel
-        originalModel = lastModel = {}.extend(model);
+        originalModel = lastModel = {}.extend(true, model);
 
         //init service call
         if(myOptions.action){
             myclass.submit();
         }
 
-        prepare();
+        myclass.update();
     }
     init.type = function(o){
         var validate = o.attr('data-validate');
@@ -209,7 +208,9 @@ Snow.Form = function (dom, options) {
                 if (o.attr(attr)) {
                     o.bind(e, function () {
                         script(this, attr);
-                        myclass.update(model);
+                        //myclass.update(model);
+                        flag = 0;
+                        prepare(this);
                     });
                 }
                 //var event = o.attr(attr);
@@ -284,8 +285,8 @@ Snow.Form = function (dom, options) {
                 }
             }
         });
-        if(lastModel.diff(model)){
-            lastModel = {}.extend(model);
+        if(lastModel.diff(true, model)){
+            lastModel = {}.extend(true, model);
             //console.log('rendering');
             if(flag >=100){
                 console.log('Some code error');
@@ -308,11 +309,11 @@ Snow.Form = function (dom, options) {
             var o = tempObj.element;
             var lastTempModel = tempObj.model;
             var curTempModel = script(o, 'data-template', true) || {};
-            if(curTempModel.diff(lastTempModel)){
+            if(curTempModel.diff(true, lastTempModel)){
                 //render the template
                 var html = Snow.template(tempObj.template, curTempModel);
                 o.html(html);
-                tempObj.model = {}.extend(curTempModel);
+                tempObj.model = {}.extend(true, curTempModel);
             }
         });
     }
