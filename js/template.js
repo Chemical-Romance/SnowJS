@@ -33,7 +33,7 @@ Snow.template = function (html, data, callback, nocache) {
         return template(html, data);
     }
     function template(html, data) {
-        var re = /<%(.+?)%>/g,
+        var re = /<%([\s\S]*?)%>/g,///<%(.+?)%>/g, ///<%[\s\S]*?%>/g,
             reExp = /(^( )?(var|if|for|else|switch|case|break|console|debugger|{|}|;))(.*)?/g,
             code = 'with(data) { var r=[];\n',
             cursor = 0,

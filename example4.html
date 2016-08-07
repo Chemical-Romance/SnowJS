@@ -20,7 +20,8 @@
             <th>Name</th><th>Age</th><th>Email</th>
         </tr>
         <%if(this.dataList){%>
-            <%for(var i=0;i<dataList.length;i++){var item = dataList[i];%>
+            <%for(var i=0;i<dataList.length;i++){
+            	var item = dataList[i];%>
                 <tr>
                     <td><%item.name%></td><td><%item.age%></td><td><%item.email%></td>
                 </tr>
