@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SnowJS Example 3</title>
+    <link rel="stylesheet" href="css/web.css">
+    <style>
+        table td{
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<p class="row-20"></p>
+
+<form data-type="snowform" class="text-center">
+    <p class="f1"><span data-value="Name"></span> is <span data-value="Gender"></span>.</p>
+    <p class="f5"><span data-model="GenderCall" data-value="Gender=='Male'?'He':'She'"></span>'s favorite fruit is <span data-value="Fruit.join(', ')"></span>.</p>
+    <p class="f5"><span data-value="GenderCall"></span> likes <span data-value="Sport.join(', ')"></span>.</p>
+    <p class="row-10"></p>
+    <table class="margin-auto text-left">
+        <tr>
+            <td>Your Name: </td>
+            <td><input data-model="Name" type="text" value="John Jackson" /></td>
+        </tr>
+        <tr>
+            <td>Your Gender: </td>
+            <td>
+                <div data-model="Gender" data-view="radioButtons">
+                    <input type="radio" id="gender_male" name="gender" value="male" checked /><label for="gender_male">Male</label>
+                    <input type="radio" id="gender_female" name="gender" value="female" /><label for="gender_female">Female</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Your Favorite Fruit: </td>
+            <td>
+                <div data-model="Fruit" data-view="checkboxes">
+                    <input type="checkbox" id="fruit_apple" value="apple" checked /><label for="fruit_apple">Apple</label>
+                    <input type="checkbox" id="fruit_banana" value="banana" /><label for="fruit_banana">Banana</label>
+                    <input type="checkbox" id="fruit_strawberry" value="strawberry" /><label for="fruit_strawberry">Strawberry</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>The Sport You Like: </td>
+            <td>
+                <div data-model="Sport" data-view="checkboxes">
+                    <input type="checkbox" id="sport_swimming" value="swimming" /><label for="sport_swimming">Swimming</label>
+                    <input type="checkbox" id="sport_running" value="running" /><label for="sport_running">Running</label>
+                    <input type="checkbox" id="sport_hiking" value="hiking" checked/><label for="sport_hiking">Hiking</label>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <p data-message class="row-5 text-center text-red"></p>
+        <p class="row-10"></p>
+        <input type="button" data-click="@reset" value="Reset"/>
+    </div>
+</form>
+<p class="row-20"></p>
+
+<script type='text/javascript' src='js/_base.js'></script>
+<script type='text/javascript' src='js/form.js'></script>
+<script type='text/javascript' src='js/validate.js'></script>
+<script type='text/javascript' src='js/template.js'></script>
+<script>
+    Snow.Form.view.radioButtons = function(){
+        var myclass = {
+            getValue: function(){
+                var radios = this.findAll('input[type="radio"]');
+                for(var i=0; i<radios.length; i++){
+                    var radio = radios[i];
+                    if(radio.checked){
+                        return radio.value;
+                    }
+                }
+                return null;
+            },
+            setValue: function(value){
+                var radios = this.findAll('input[type="radio"]')
+                for(var i=0; i<radios.length; i++){
+                    var radio = radios[i];
+                    if(radio.value == value){
+                        return radio.checked = true;
+                    }
+                }
+            }
+        }
+        return myclass;
+    }
+    Snow.Form.view.checkboxes = function(){
+        var myclass = {
+            getValue: function(){
+                var values = [];
+                this.findAll('input[type="checkbox"]').each(function(checkbox){
+                    if(checkbox.checked){
+                        values.push(checkbox.value);
+                    }
+                });
+                return values;
+            },
+            setValue: function(values){
+                this.findAll('input[type="checkbox"]').each(function(checkbox){
+                    checkbox.checked = values.contains(checkbox.value);
+                });
+            }
+        }
+        return myclass;}
+
+</script>
+</body>
+</html>

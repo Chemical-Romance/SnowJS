@@ -27,7 +27,7 @@
     <!--</select>-->
 
     <input type="button" value="重置Age" data-click="age=100"/>
-    <input type="button" value="更新" data-click="@update"/>
+    <input type="button" value="更新" data-click="@updateForm"/>
     <input type="button" value="提交" data-click="@submitForm"/>
 </form>
 <script type='text/javascript' src='js/_base.js'></script>
@@ -62,16 +62,16 @@
 
     }
 
-    var form = Snow.Form(document.querySelector('body'), {
+    Snow.Form('body', {
         model:{
             name: '三',
             lastName: '张',
             age: 12
         },
         fn: {
-            update: function(model){
+            updateForm: function(model, response, snowform){
                 console.log(model);
-                form.update({age: model.age + 90});
+                snowform.update({age: model.age + 90});
             },
             test: function(model){
 

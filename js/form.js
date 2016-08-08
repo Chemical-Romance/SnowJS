@@ -144,7 +144,7 @@ Snow.Form = function (dom, options) {
             init.model(o);
 
             //bind event
-            init.listen(o);
+            init.listen(o, o);
         });
 
         //init events
@@ -183,23 +183,33 @@ Snow.Form = function (dom, options) {
             model[key] = unifyValue(o);
         }
     };
-    init.listen = function(o){
+    init.listen = function(o, triggerDom){
         //init change event
         if(o.tagName=='INPUT'){
             if(o.type == 'checkbox' || o.type == 'radio'){
-                o.bind('change', init.change);
+                init.listen.bind('change', o, triggerDom);
             }
             else{
-                o.bind('input', init.change);
+                init.listen.bind('input', o, triggerDom);
             }
         }
         else if(o.tagName == 'SELECT'){
-            o.bind('change', init.change);
+            init.listen.bind('change', o, triggerDom);
         }
         else{
-            o.bind('input', init.change);
+            init.listen.bind('input', o, triggerDom);
+        }
+
+        //init view event
+        if(o.attr('data-view')){
+            o.findAll('input,select,textarea').each(function(myDom){
+                init.listen(myDom, o);
+            });
         }
     };
+    init.listen.bind = function(eventName, o, triggerDom){
+        o.bind(eventName, function(){ init.change.call(triggerDom); });
+    }
     init.events = function(){
         //init user events
         eventList.each(function(o){
@@ -231,8 +241,12 @@ Snow.Form = function (dom, options) {
     init.views = function(){
         dom.findAll('[data-view]').each(function (o) {
             o.view = {}; //view instances
-            o.attr('data-view').replace(/ /g, '').split(',').forEach(function (key) {
+            o.attr('data-view').replace(/ /g, '').split(',').each(function (key) {
                 var fn = Snow.Form.view[key];
+                if(!fn){
+                    console.error('View of "' + key + '" is not defined!');
+                    return;
+                }
                 o.view[key] = fn.call(o, model);
             });
         });
@@ -367,18 +381,18 @@ Snow.Form = function (dom, options) {
                 var fnName = func.substring(1);
                 //call form.fn
                 if(myclass.fn[fnName]){
-                    return myclass.fn[fnName].call(o, model);
+                    return myclass.fn[fnName].call(o, model, response, myclass);
                 }
                 //call Snow.Form.fn
                 if(Snow.Form.fn[fnName]){
-                    return Snow.Form.fn[fnName].call(o, model);
+                    return Snow.Form.fn[fnName].call(o, model, response, myclass);
                 }
                 //undefined function
                 console.error('The function of "' + fnName + '" is not defined!');
             }
             else {
                 var str = 'with(model){' + (isReturn ? 'return ' : '') + ' ' + o.attr(attr) + '}';
-                return new Function('model', 'response', str).call(o, model, response);
+                return new Function('model', 'response', 'snowform', str).call(o, model, response, myclass);
             }
         }
         
