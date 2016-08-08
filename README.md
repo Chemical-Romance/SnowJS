@@ -3,6 +3,6 @@ It makes your Javascript/Html very simple!
 
 
 You can call it as:
-<dom data-type="snowform"></dom>
+&lt;dom data-type="snowform"&gt;&lt;/dom&gt;
 or
-<script>Snow.Form(dom);</script>
+&lt;script&gt;Snow.Form(dom);&lt;/script&gt;
