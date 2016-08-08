@@ -10,12 +10,18 @@
             width: 150px;
             text-align: left;
         }
+        .log{
+            width:500px;
+            overflow: auto;
+            height: 310px;
+        }
     </style>
 </head>
 <body data-type="snowform" data-script="@update" data-script-delay="1000">
 <p class="row-20"></p>
-<p class="text-center f5">You have stay for <span data-model="second" data-script="second++">1</span> seconds.</p>
-
+<p class="text-center f5">You have stay for <span data-model="second" data-script="second++;log='Updated Time: '+(new Date()).format('yyyy-MM-dd hh:mm:ss') + '<br/>'+log">1</span> seconds.</p>
+<p class="row-5"></p>
+<div class="log margin-auto text-center" data-model="log"></div>
 <p class="row-20"></p>
 
 <script type='text/javascript' src='js/_base.js'></script>

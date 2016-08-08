@@ -259,8 +259,14 @@ Snow.Form = function (dom, options) {
         prepare(this);
     };
     init.templates = function(){
+        var templateKeys = ['data-template', 'class'];
         dom.findAll('[data-template]').each(function(o){
-            var newDom = find('<div data-template="'+ o.attr('data-template')+'"></div>');
+            var newDom = find('<div></div>');
+
+            //append the template attributes
+            templateKeys.each(function(key){
+                newDom.attr(key, o.attr(key));
+            });
             var tempObj = {
                 element: newDom,
                 template: o.html().replace(/&lt;/g, '<').replace(/&gt;/g, '>')
