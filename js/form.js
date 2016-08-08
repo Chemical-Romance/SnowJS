@@ -161,6 +161,9 @@ Snow.Form = function (dom, options) {
             myclass.submit();
         }
 
+        //store the snowform instance
+        dom.data('snowform', myclass);
+
         myclass.update();
     }
     init.type = function(o){

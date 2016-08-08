@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SnowJS Example 6</title>
+    <title>SnowJS Example 7</title>
     <link rel="stylesheet" href="css/web.css">
     <style>
         table td{
@@ -13,10 +13,8 @@
 <body>
 <p class="row-20"></p>
 
-<form data-type="snowform" class="text-center">
-    <p class="f1"><span data-value="Name"></span> is <span data-value="Gender"></span>.</p>
-    <p class="f5"><span data-model="GenderCall" data-value="Gender=='Male'?'He':'She'"></span>'s favorite fruit is <span data-value="Fruit.join(', ')"></span>.</p>
-    <p class="f5"><span data-value="GenderCall"></span> likes <span data-value="Sport.join(', ')"></span>.</p>
+<form class="text-center">
+    <p class="f1">Feedback Form</p>
     <p class="row-10"></p>
     <table class="margin-auto text-left">
         <tr>
@@ -56,7 +54,8 @@
     <div>
         <p data-message class="row-5 text-center text-red"></p>
         <p class="row-10"></p>
-        <input type="button" data-click="@reset" value="Reset"/>
+        <input type="button" data-click="@getModelByPublic" value="Call Public Function"/>
+        <input type="button" data-click="@getModelByPrivate" value="Call Private Function"/>
     </div>
 </form>
 <p class="row-20"></p>
@@ -79,13 +78,7 @@
                 return null;
             },
             setValue: function(value){
-                var radios = this.findAll('input[type="radio"]')
-                for(var i=0; i<radios.length; i++){
-                    var radio = radios[i];
-                    if(radio.value == value){
-                        return radio.checked = true;
-                    }
-                }
+
             }
         }
         return myclass;
@@ -102,14 +95,28 @@
                 return values;
             },
             setValue: function(values){
-                this.findAll('input[type="checkbox"]').each(function(checkbox){
-                    checkbox.checked = values.contains(checkbox.value);
-                });
+
             }
         }
         return myclass;
     }
 
+    Snow.Form('form', {
+        //defined the private function
+        fn:{
+            getModelByPrivate: function(model){
+                var text = 'You got the model by the private function.\n'
+                text += JSON.stringify(model);
+                alert(text);
+            }
+        }
+    });
+    //defined the public function
+    Snow.Form.fn.getModelByPublic = function(model){
+        var text = 'You got the model by the public function.\n'
+        text += JSON.stringify(model);
+        alert(text);
+    }
 </script>
 </body>
 </html>
