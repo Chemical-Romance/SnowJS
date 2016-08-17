@@ -37,7 +37,7 @@ Snow.Form = function (dom, options) {
         update: function (newModel) { //update model and view
             flag = 0;
             model.extend(newModel);
-            prepare();
+            prepare(null, true);
         },
         submit: function (callback) {
             var validList = dom.findAll('[data-validate]');
@@ -164,7 +164,9 @@ Snow.Form = function (dom, options) {
         //store the snowform instance
         dom.data('snowform', myclass);
 
-        myclass.update();
+        //update the view immediately
+        flag = 0;
+        prepare(null, false);
     }
     init.type = function(o){
         var validate = o.attr('data-validate');
@@ -223,7 +225,7 @@ Snow.Form = function (dom, options) {
                         script(this, attr);
                         //myclass.update(model);
                         flag = 0;
-                        prepare(this);
+                        prepare(this, true);
                     });
                 }
                 //var event = o.attr(attr);
@@ -273,7 +275,7 @@ Snow.Form = function (dom, options) {
         }
         flag = 0;
         model[key] = unifyValue(this);
-        prepare(this);
+        prepare(this, true);
     };
     init.templates = function(){
         var templateKeys = ['data-template', 'class'];
@@ -294,7 +296,7 @@ Snow.Form = function (dom, options) {
     };
 
 
-    function prepare(curDom){
+    function prepare(curDom, delayUpdate){
         //prepare the model
         modelList.each(function(o){
             var key = o.attr('data-model');
@@ -314,11 +316,16 @@ Snow.Form = function (dom, options) {
             if(flag >=100){
                 console.log('Some code error');
             }
-            prepare(curDom);
+            prepare(curDom, delayUpdate);
         }
         else{
+            if(delayUpdate){
+                delayUpdateView(curDom);
+            }
+            else{
+                updateView(curDom);
+            }
             //console.log('complete');
-            delayUpdateView(curDom);
         }
     }
     function delayUpdateView(curDom){
