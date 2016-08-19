@@ -17,7 +17,15 @@ var Snow = {
     }
 };
 
-//document extend
+//extend window
+window.height = function(){
+    return this.document.documentElement.clientHeight;
+}
+window.width = function(){
+    return this.document.documentElement.clientWidth;
+}
+
+//extend document
 document.ready = function (callback) {
     document.addEventListener('DOMContentLoaded', function () {
         document.removeEventListener('DOMContentLoaded', arguments.callee, false);
@@ -42,7 +50,7 @@ document.ready = function (callback) {
     //}
 }
 
-//element extend
+//extend element
 function find(selectors) {
     if (typeof (selectors) == 'object')
         return selectors;
@@ -289,7 +297,9 @@ HTMLElement.prototype.unbind = function (type, listener, useCapture) {
 //    return this;
 //};
 
-//array extend
+
+
+//extend array
 NodeList.prototype.each = Array.prototype.each = function(callback){
     for(var i=0; i<this.length; i++){
         callback(this[i], i);
@@ -318,7 +328,7 @@ Array.prototype.remove = function(value){
     }
 };
 
-//object extend
+//extend object
 Object.prototype.extend = function(source){
     if(arguments.length > 0){
         var deep = false, i = 0;
@@ -368,7 +378,7 @@ Object.prototype.diff = function(deep, compareObj){
     return false;
 };
 
-//string extend
+//extend string
 
 //Format string by data model
 //var model = { Name: 'Lisa', Age: 12, Employee: { A: 'John'} };
@@ -440,7 +450,7 @@ String.prototype.trim = function () {
     return this.replace(/(^\s+)|(\s+$)/g, "");
 };
 
-//date extend
+//extend date
 Date.prototype.format = function (format) {
     var o = {
         "M+": this.getMonth() + 1, //month
