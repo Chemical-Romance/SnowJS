@@ -16,6 +16,9 @@ Snow.ajax = function(options){
     //extend the options
     myOptions.extend(options);
 
+    //post data
+    var postData;
+
     //set the dataType
     var jsonRequest = myOptions.contentType.indexOf('application/json') > -1;
     if(!myOptions.dataType){
@@ -29,16 +32,7 @@ Snow.ajax = function(options){
 
     //create the http request
     var ajaxRequest = Snow.ajax.createXMLHttpRequest(myOptions.timeout);
-    ajaxRequest.open(myOptions.type, myOptions.url, myOptions.async);
 
-    //prepare the data
-    var data;
-    if(jsonRequest && typeof (myOptions.data) == "object"){
-        data = JSON.stringify(myOptions.data)
-    }
-    else{
-        data = myOptions.data;
-    }
     if (myOptions.async) {
         ajaxRequest.onreadystatechange = function(){
             if (ajaxRequest.readyState == 4) {
@@ -61,15 +55,52 @@ Snow.ajax = function(options){
     }
 
     if(myOptions.type == 'GET' || myOptions.type=='get'){
-        ajaxRequest.send(null);
+        //parse the get parameter
+        var str;
+        if(!myOptions.data){
+            str = '';
+        }
+        else if(typeof(myOptions.data) == 'object'){
+            var items = [];
+            myOptions.data.each(function(value, key){
+                items.push(key + '=' + encodeURIComponent(value));
+            });
+            str = items.join('&');
+        }
+        else{
+            str = myOptions.data;
+        }
+
+        //check the url
+        if(str) {
+            if (myOptions.url.indexOf('?') > -1) {
+                myOptions.url += '&' + str;
+            }
+            else {
+                myOptions.url += '?' + str;
+            }
+        }
     }
     else{
-        //ajaxRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        ajaxRequest.setRequestHeader("Content-Type", myOptions.contentType);
 
-        //send data
-        ajaxRequest.send(data);
+        //prepare the data
+        if(jsonRequest && typeof (myOptions.data) == "object"){
+            postData = JSON.stringify(myOptions.data)
+        }
+        else{
+            postData = myOptions.data;
+        }
+
     }
+
+    //open request
+    ajaxRequest.open(myOptions.type, myOptions.url, myOptions.async);
+
+    //set content type
+    ajaxRequest.setRequestHeader("Content-Type", myOptions.contentType);
+
+    //send data
+    ajaxRequest.send(postData);
 
     if (!myOptions.async)
         return Snow.ajax.parseData(myOptions.dataType, ajaxRequest);
